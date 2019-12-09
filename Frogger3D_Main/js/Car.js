@@ -2,92 +2,6 @@ var black_bas = new THREE.MeshBasicMaterial({color: 0x0});
 var black_phong = new THREE.MeshPhongMaterial({color: 0x0, emissive: 0x0, specular: 0x878787, shininess: 3});
 var black_lamb = new THREE.MeshLambertMaterial({color: 0x101010, emissive: 0x0});
 
-function make_cockpit_geometry() {
-  var geo = new THREE.Geometry();
-  geo.vertices.push(new THREE.Vector3(-3, -3, -3));
-  geo.vertices.push(new THREE.Vector3(3, -3, -3));
-  geo.vertices.push(new THREE.Vector3(-3, 3, -3));
-  geo.vertices.push(new THREE.Vector3(3, 3, -3));
-  geo.vertices.push(new THREE.Vector3(-2, -2, 3));
-  geo.vertices.push(new THREE.Vector3(2, -2, 3));
-  geo.vertices.push(new THREE.Vector3(-2, 2, 3));
-  geo.vertices.push(new THREE.Vector3(2, 2, 3));
-
-  geo.faces.push(new THREE.Face3(0,3,2));
-  geo.faces.push(new THREE.Face3(1,3,0));
-  geo.faces.push(new THREE.Face3(4,7,6));
-  geo.faces.push(new THREE.Face3(4,5,7));
-  geo.faces.push(new THREE.Face3(4,2,0));
-  geo.faces.push(new THREE.Face3(2,4,6));
-  geo.faces.push(new THREE.Face3(6,3,2));
-  geo.faces.push(new THREE.Face3(3,6,7));
-  geo.faces.push(new THREE.Face3(1,7,5));
-  geo.faces.push(new THREE.Face3(7,1,3));
-  geo.faces.push(new THREE.Face3(1,4,0));
-  geo.faces.push(new THREE.Face3(4,1,5));
-
-  geo.verticesNeedUpdate = true;
-  geo.elementsNeedUpdate = true;
-
-  geo.computeFaceNormals();
-  geo.computeFlatVertexNormals();
-
-  return geo;
-}
-
-function make_nose_geometry() {
-  var geo = new THREE.Geometry();
-  geo.vertices.push(new THREE.Vector3(-2,-3,-2));
-  geo.vertices.push(new THREE.Vector3(2,-3,-2));
-  geo.vertices.push(new THREE.Vector3(-2,3,-2));
-  geo.vertices.push(new THREE.Vector3(2,3,-2));
-  geo.vertices.push(new THREE.Vector3(-1.5,-4,2));
-  geo.vertices.push(new THREE.Vector3(1.5,-4,2));
-  geo.vertices.push(new THREE.Vector3(-1.5,2,2));
-  geo.vertices.push(new THREE.Vector3(1.5,2,2));
-
-  geo.faces.push(new THREE.Face3(0,3,2));
-  geo.faces.push(new THREE.Face3(1,3,0));
-  geo.faces.push(new THREE.Face3(4,7,6));
-  geo.faces.push(new THREE.Face3(4,5,7));
-  geo.faces.push(new THREE.Face3(4,2,0));
-  geo.faces.push(new THREE.Face3(2,4,6));
-  geo.faces.push(new THREE.Face3(6,3,2));
-  geo.faces.push(new THREE.Face3(3,6,7));
-  geo.faces.push(new THREE.Face3(1,7,5));
-  geo.faces.push(new THREE.Face3(7,1,3));
-  geo.faces.push(new THREE.Face3(1,4,0));
-  geo.faces.push(new THREE.Face3(4,1,5));
-
-  geo.verticesNeedUpdate = true;
-  geo.elementsNeedUpdate = true;
-
-  geo.computeFaceNormals();
-  geo.computeFlatVertexNormals();
-
-  return geo;
-}
-
-function make_headlight() {
-  var geo = new THREE.Geometry();
-  geo.vertices.push(new THREE.Vector3(0,0,0));
-  geo.vertices.push(new THREE.Vector3(0.5,0.5,0.5));
-  geo.vertices.push(new THREE.Vector3(0.5,0.5,-0.5));
-  geo.vertices.push(new THREE.Vector3(-0.5,0.5,0.5));
-  geo.vertices.push(new THREE.Vector3(-0.5,0.5,-0.5));
-
-  geo.faces.push(new THREE.Face3(1,2,4));
-  geo.faces.push(new THREE.Face3(1,4,3));
-  geo.faces.push(new THREE.Face3(1,0,2));
-  geo.faces.push(new THREE.Face3(0,4,2));
-  geo.faces.push(new THREE.Face3(3,4,0));
-  geo.faces.push(new THREE.Face3(0,1,3));
-
-  geo.computeFaceNormals();
-
-  return geo;
-}
-
 function Car(position, direction) {
   'use strict';
 
@@ -119,53 +33,34 @@ function Car(position, direction) {
 
   var mesh = new THREE.Object3D();
 
-  var phong = new THREE.MeshPhongMaterial({color: 0xffffff, emissive: 0x0, specular: 0x878787, shininess: 80});
-  var lambert = new THREE.MeshLambertMaterial({color: 0xffffff, emissive: 0x0});
+  var phong = new THREE.MeshPhongMaterial({color: 0x796b26, emissive: 0x0, specular: 0xd5e3af, shininess: 5});
+  var lambert = new THREE.MeshLambertMaterial({color: 0x796b26, emissive: 0x0});
 
   // Add cockpit
-  var geometry = make_cockpit_geometry(); //new THREE.BoxGeometry( 6, 6, 6 );
+
+  var geometry = new THREE.SphereGeometry(4,10,10); //new THREE.BoxGeometry( 6, 6, 6 );
   var material = phong;
-  var cockmesh = new THREE.Mesh( geometry, material );
-  cockmesh.position.set(0, -3, 4);
-  mesh.add(cockmesh);
+  var bodymesh = new THREE.Mesh( geometry, material );
+  bodymesh.position.set(0, 0, 2);
+  mesh.add(bodymesh);
 
   // Add nose
-  geometry = make_nose_geometry(); //new THREE.BoxGeometry( 4, 6, 4 );
-  var nosemesh = new THREE.Mesh( geometry, material);
-  nosemesh.position.set(0, 3, 3);
-  mesh.add(nosemesh);
-
-  // Add back wheels
-  var wheel1 = this.addBackWheel(-3.75,-3, 1.625, mesh);
-  var wheel2 = this.addBackWheel( 3.75,-3, 1.625, mesh);
-
-  // Add front wheels
-  var wheel3 = this.addFrontWheel(-2.5, 4, 0.75, mesh);
-  var wheel4 = this.addFrontWheel( 2.5, 4, 0.75, mesh);
-
-  // Add headlights
-  geometry = make_headlight();
-  var material2 = black_phong;
-  var headlightmesh1 = new THREE.Mesh(geometry, material2);
-  var headlightmesh2 = new THREE.Mesh(geometry, material2);
-  headlightmesh1.position.set(1,5.3,3);
-  headlightmesh2.position.set(-1,5.3,3);
-  mesh.add(headlightmesh1, headlightmesh2);
+  geometry = new THREE.SphereGeometry(3,10,10); //new THREE.BoxGeometry( 4, 6, 4 );
+  var headmesh = new THREE.Mesh( geometry, material);
+  headmesh.position.set(0, 3, 2.5);
+  mesh.add(headmesh);
 
   this.light1 = new THREE.SpotLight(0xfffffffff, 1, 100, Math.PI/6, 0.7, 1);
   this.light1.position.set(1, 0.5, 0);
   this.light1.shadowCameraNear = 0.01;
   this.light1.castShadow = true;
   this.light1.shadowDarkness = 0.5;
-  this.light2 = this.light1.clone();
-  this.light2.position.set(-1, 0.5, 0)
 
-  headlightmesh1.add(this.light1);
-  headlightmesh2.add(this.light2);
+  headmesh.add(this.light1);
 
-  SCENE.add(this.light1.target, this.light2.target);
+  SCENE.add(this.light1.target);
 
-  this.extraParts = [headlightmesh1, headlightmesh2, wheel1, wheel2, wheel3, wheel4];
+
 
   MovableObject.call(this, position, mesh, material, lambert, phong);
   SolidObject.call(this, position, mesh, new SphereBox(6), material, lambert, phong);
@@ -173,7 +68,7 @@ function Car(position, direction) {
   this.direction = direction;
   this.potAngularSpd = 0;
 
-  this.target = [cockmesh, nosemesh];
+  this.target = [bodymesh, headmesh];
 
   this.target.material = ILUMINATE ? this.lightMat : this.basicMat;
 
@@ -267,7 +162,6 @@ function Car(position, direction) {
     }
 
     this.light1.target.position.copy(this.mesh.position).add(this.direction.clone().multiplyScalar(100));
-    this.light2.target.position.copy(this.mesh.position).add(this.direction.clone().multiplyScalar(100));
 
     if (this.mesh.position.distanceTo(new THREE.Vector3(-60, 0, 0)) < 40) {
       this.midLap = true;
@@ -364,7 +258,6 @@ function Car(position, direction) {
   window.addEventListener("keydown", function(key) {
     if (key.key == "H" || key.key == "h") {
       self.light1.visible = !self.light1.visible;
-      self.light2.visible = !self.light2.visible;
     }
   });
 }
