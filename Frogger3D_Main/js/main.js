@@ -12,9 +12,7 @@ var STEREO_ON = false;
 
 var RENDERER;
 var CAR; // Needed to make camera follow car.
-var ORANGE_SPEED = 10;
-var ORANGE_TIME = 2000;
-var INITIAL_POSITION = new THREE.Vector3(60,0,0);
+var INITIAL_POSITION = new THREE.Vector3(0,-80,0);
 var SUN;
 var GRASS;
 var RIVER;
@@ -51,8 +49,7 @@ function initScene(){
   SCENE.background = fogColor;
   SCENE.fog = new THREE.FogExp2(fogColor,0.005);
 
-  updateOrangeFog(SCENE);
-  updateButterFog(SCENE);
+
 
 
   CAMERA1 = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, 1, 1000  );
@@ -119,7 +116,7 @@ function createTrack(){
 
   function turtleLine(start, end) {
     var distance = start.distanceTo(end);
-    var count = distance/48; // Density
+    var count = distance/(50+ Math.random()*50); // Density
     var deltaTurtle = (end.sub(start)).divideScalar(count);
     var lastTurtle = start;
     for (var i=0; i<count-1; i++){
@@ -130,7 +127,7 @@ function createTrack(){
 
   function woodLine(start, end) {
     var distance = start.distanceTo(end);
-    var count = distance/48; // Density
+    var count = distance/(50+ Math.random()*50); // Density
     var deltaWood = (end.sub(start)).divideScalar(count);
     var lastWood = start;
     for (var i=0; i<count-1; i++){
@@ -141,7 +138,7 @@ function createTrack(){
 
   function carLine(start, end) {
     var distance = start.distanceTo(end);
-    var count = distance/48; // Density
+    var count = distance/(50+ Math.random()*50); // Density
     var deltaCar = (end.sub(start)).divideScalar(count);
     var lastCar = start;
     for (var i=0; i<count-1; i++){
@@ -162,17 +159,6 @@ function createTrack(){
   carLine(new THREE.Vector3(-170,-55,1), new THREE.Vector3(+170,-55,1));
   carLine(new THREE.Vector3(-170,-25,1), new THREE.Vector3(+170,-25,1));
 
-  // Add 5 butters
-  //new Butter(new THREE.Vector3(90,50,5));
-  //new Butter(new THREE.Vector3(-90,-50,5));
-  //new Butter(new THREE.Vector3(-90,-0,5));
-  //new Butter(new THREE.Vector3(90,-50,5));
-  new Butter(new THREE.Vector3(0,0,5));
-
-  // Add 2 oranges
-  new Orange(new THREE.Vector3(-90,50,5));
-  new Orange(new THREE.Vector3(90,-30,5));
-
   new Candle(new THREE.Vector3(75, 0, 0));
   new Candle(new THREE.Vector3(-75,0 ,0));
   new Candle(new THREE.Vector3(75, -80, 0));
@@ -181,10 +167,10 @@ function createTrack(){
   new Candle(new THREE.Vector3(-75, 80, 0));
 
     // Create the flags.
-    UPDATE.push(new Flag(new THREE.Vector3(35,0,0)));
-    UPDATE.push(new Flag(new THREE.Vector3(85,0,0)));
-    UPDATE.push(new Flag(new THREE.Vector3(-35,0,0)));
-    UPDATE.push(new Flag(new THREE.Vector3(-85,0,0)));
+    UPDATE.push(new Flag(new THREE.Vector3(35,70,0)));
+    UPDATE.push(new Flag(new THREE.Vector3(85,70,0)));
+    UPDATE.push(new Flag(new THREE.Vector3(-35,70,0)));
+    UPDATE.push(new Flag(new THREE.Vector3(-85,70,0)));
 
     PARTICLE_SYSTEM = new ParticleSystem();
     UPDATE.push(PARTICLE_SYSTEM);
@@ -274,18 +260,6 @@ function setupUI() {
 
 }
 
-function create_orange() {
-  if (!PAUSED) {
-    // random_range(-100, 100)
-    var x = Math.random() * 200 - 100;
-    var y = Math.random() * 200 - 100;
-    new Orange(new THREE.Vector3(x,y,5))
-  }
-
-  // Set timeout recursively.
-  setTimeout(create_orange, Math.random()*ORANGE_TIME + ORANGE_TIME)
-}
-
 function animate() {
   'use strict';
 
@@ -366,8 +340,6 @@ window.addEventListener("keydown", function(key) {
         else{
             SCENE.fog = new THREE.FogExp2(fogColor,0.005);
         }
-        updateOrangeFog(SCENE);
-        updateButterFog(SCENE);
         break;
 
     case "L":
@@ -407,9 +379,7 @@ function stereoRender() {
 function restartGame() {
   // Reset Global Vars.
   CAMERA = CAMERA1;
-  ORANGE_SPEED = 10;
-  ORANGE_TIME = 2000;
-  INITIAL_POSITION = new THREE.Vector3(60,0,0);
+  INITIAL_POSITION = new THREE.Vector3(0,-80,0);
   LIVES = 5;
   GAME_OVER = false;
 
@@ -424,23 +394,6 @@ function restartGame() {
   IN_WIREFRAME = false;
   ILUMINATE = true;
   PHONG_SWITCH = true;
-
-  // Reset Global Materials.
-  /*orange_material = new THREE.MeshBasicMaterial( { color: 0xdb9020 } );
-  orange_material2 = new THREE.MeshBasicMaterial( { color: 0x7cba81} );
-  orange_phong = new THREE.MeshPhongMaterial({color: 0xdb9020, emissive: 0x0, specular: 0x878787, shininess: 10});
-  orange_lambert = new THREE.MeshLambertMaterial({color: 0xdb9020, emissive: 0x0});
-  orange_phong2 = new THREE.MeshPhongMaterial({color: 0x7cba81, emissive: 0x0, specular: 0x878787, shininess: 10});
-  orange_lambert2 = new THREE.MeshLambertMaterial({color: 0x7cba81, emissive: 0x0});
-  butter_material = new THREE.MeshBasicMaterial({ color: 0x259632 });
-  butter_phong = new THREE.MeshPhongMaterial({color: 0x259632, emissive: 0x0, specular: 0x878787, shininess: 5});
-  butter_lambert = new THREE.MeshLambertMaterial({color: 0x259632, emissive: 0x0});
-  cheerio_material = new THREE.MeshBasicMaterial( { color: 0xfffb44 } );
-  cheerio_phong = new THREE.MeshPhongMaterial({color: 0xfffb44, emissive: 0x0, specular: 0x878787, shininess: 50});
-  cheerio_lambert = new THREE.MeshLambertMaterial({color: 0xfffb44, emissive: 0x0});
-  candle_material = new THREE.MeshBasicMaterial({color: 0xfeffed});
-  candle_phong = new THREE.MeshPhongMaterial({color: 0xfeffed, emissive: 0x0, specular: 0x878787, shininess: 5});
-  candle_lambert = new THREE.MeshLambertMaterial({color: 0xfeffed, emissive: 0x0});*/
 
   // Reset the Renderer
   RENDERER.dispose();
@@ -459,17 +412,6 @@ window.addEventListener("keydown", function(key) {
     restartGame();
   }
 });
-
-// Speed up the oranges.
-setInterval(function() {
-  if (PAUSED) return;
-  ORANGE_SPEED = ORANGE_SPEED + (180 - ORANGE_SPEED) * 0.05;
-  ORANGE_TIME = Math.max(500, ORANGE_TIME - 200);
-  console.log("New Level: " + ORANGE_SPEED + ", " + ORANGE_TIME);
-}, 10000);
-
-// Spawn oranges randomly.
-setTimeout(create_orange, Math.random()*ORANGE_TIME + ORANGE_TIME);
 
 window.addEventListener("deviceorientation", function(event) {
   HEAD_ANGLE = (event.alpha / 360) * 2 * Math.PI;
