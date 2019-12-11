@@ -116,7 +116,7 @@ function createTrack(){
 
   function turtleLine(start, end) {
     var distance = start.distanceTo(end);
-    var count = distance/(50+ Math.random()*50); // Density
+    var count = distance/(40+ Math.random()*50); // Density
     var deltaTurtle = (end.sub(start)).divideScalar(count);
     var lastTurtle = start;
     for (var i=0; i<count-1; i++){
@@ -127,7 +127,7 @@ function createTrack(){
 
   function woodLine(start, end) {
     var distance = start.distanceTo(end);
-    var count = distance/(50+ Math.random()*50); // Density
+    var count = distance/(40+ Math.random()*50); // Density
     var deltaWood = (end.sub(start)).divideScalar(count);
     var lastWood = start;
     for (var i=0; i<count-1; i++){
@@ -138,7 +138,7 @@ function createTrack(){
 
   function carLine(start, end) {
     var distance = start.distanceTo(end);
-    var count = distance/(50+ Math.random()*50); // Density
+    var count = distance/(40+ Math.random()*50); // Density
     var deltaCar = (end.sub(start)).divideScalar(count);
     var lastCar = start;
     for (var i=0; i<count-1; i++){
@@ -148,16 +148,16 @@ function createTrack(){
   }
 
   // Create TurtleLines
-  turtleLine(new THREE.Vector3(-170,+55,0.5), new THREE.Vector3(+170,+55,0.5));
-  turtleLine(new THREE.Vector3(-170,+25,0.5), new THREE.Vector3(+170,+25,0.5));
+  turtleLine(new THREE.Vector3(-100,+55,0.5), new THREE.Vector3(+100,+55,0.5));
+  turtleLine(new THREE.Vector3(-100,+25,0.5), new THREE.Vector3(+100,+25,0.5));
 
   // Create woodLines
-  woodLine(new THREE.Vector3(-170,+40,0), new THREE.Vector3(+170,+40,0));
+  woodLine(new THREE.Vector3(-100,+40,0), new THREE.Vector3(+100,+40,0));
 
 
-  carLine(new THREE.Vector3(-170,-40,1), new THREE.Vector3(+170,-40,1));
-  carLine(new THREE.Vector3(-170,-55,1), new THREE.Vector3(+170,-55,1));
-  carLine(new THREE.Vector3(-170,-25,1), new THREE.Vector3(+170,-25,1));
+  carLine(new THREE.Vector3(-100,-40,1), new THREE.Vector3(+100,-40,1));
+  carLine(new THREE.Vector3(-100,-55,1), new THREE.Vector3(+100,-55,1));
+  carLine(new THREE.Vector3(-100,-25,1), new THREE.Vector3(+100,-25,1));
 
   new Candle(new THREE.Vector3(75, 0, 0));
   new Candle(new THREE.Vector3(-75,0 ,0));

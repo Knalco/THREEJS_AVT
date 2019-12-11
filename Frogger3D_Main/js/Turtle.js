@@ -35,8 +35,7 @@ function Turtle(position){
 
   this.update = function(delta) {
     if (this.isOutside()) {
-      this.speed = 120;
-      this.direction = new THREE.Vector3(0,0,-1);
+      this.mesh.position.x=-100;
     }
 
     if (this.mesh.position.z < -50) {

@@ -30,6 +30,10 @@ function Carr(position){
 
   this.speed = 5;
   this.direction = new THREE.Vector3(1,0,0);
+  if (this.mesh.position.y==-40) {
+    this.direction = new THREE.Vector3(-1,0,0);
+  }
+  
 
   this.collide = function(other) {
     if (other instanceof Orange) return; // Disable collision with oranges for performance.
@@ -47,8 +51,12 @@ function Carr(position){
 
   this.update = function(delta) {
     if (this.isOutside()) {
-      this.speed = 120;
-      this.direction = new THREE.Vector3(0,0,-1);
+      if (this.direction.x == -1) {
+        this.mesh.position.x= 100;
+      }else{
+        this.mesh.position.x=-100;
+      }
+      
     }
 
     if (this.mesh.position.z < -50) {
