@@ -29,7 +29,7 @@ function Car(position, direction) {
   mesh.add(headmesh);
 
   this.light1 = new THREE.SpotLight(0xfffffffff, 1, 100, Math.PI/6, 0.7, 1);
-  this.light1.position.set(1, 0.5, 0);
+  this.light1.position.set(0, 0.5, 0);
   this.light1.shadowCameraNear = 0.01;
   this.light1.castShadow = true;
   this.light1.shadowDarkness = 0.5;
@@ -51,7 +51,7 @@ function Car(position, direction) {
 
   this.lightMat2 = PHONG_SWITCH ? black_phong : black_lamb;
 
-  this.targets = [[60, 60], [-60, 60], [-60, -60], [60, -60]];
+  this.targets = [[50, -80], [50, 0], [20, 0], [0, 80]];
   this.currentTarget = 0;
 
   // Movement
@@ -99,24 +99,24 @@ function Car(position, direction) {
     var direction = this.direction.clone();
     var angle = direction.angleTo(lineToTarget);
 
-    this.acceleration = this.baseAcceleration / 3;
-    if (this.speed > this.maxSpeed / 3) {
-      this.speed = this.maxSpeed / 3;
-    }
+    this.speed =30
 
     var dist = this.mesh.position.distanceTo(target);
-    if (dist < 10) {
+    if (dist < 5) {
+      this.speed=0;
       this.currentTarget = (this.currentTarget + 1) % this.targets.length;
     }
 
-    if (angle > 0.2) {
+    if (angle > 0.3) {
       this.angularSpd = Math.PI;
-      this.acceleration = 0;
     }
     if (angle > Math.PI) {
       this.angularSpd = - Math.PI;
-      this.acceleration = 0;
     }
+    if (angle < 0.3 || angle > 2*Math.PI -0.3){
+      this.angularSpd=0;
+    }
+
   }
 
   this.update = function(delta) {
@@ -137,18 +137,21 @@ function Car(position, direction) {
         GO_TXT.mesh.visible = true;
       }
       this.speed = 0;
+      this.currentTarget=0;
       this.mesh.position.copy(INITIAL_POSITION);
     }
 
     this.light1.target.position.copy(this.mesh.position).add(this.direction.clone().multiplyScalar(100));
 
     if (this.mesh.position.y>70) {
+      
       SCORE++;
       SCORE_TXT.updateScore(SCORE);
       console.log('Win!');
       this.midLap = false;
       PARTICLE_SYSTEM.reset();
       this.speed = 0;
+      this.currentTarget=0;
       this.mesh.position.copy(INITIAL_POSITION);
     }
   };
@@ -168,6 +171,7 @@ function Car(position, direction) {
 
       other.remove();
       this.speed = 0;
+      this.currentTarget=0;
       this.mesh.position.copy(INITIAL_POSITION);
     }
 
@@ -185,6 +189,7 @@ function Car(position, direction) {
 
 
       this.speed = 0;
+      this.currentTarget=0;
       this.mesh.position.copy(INITIAL_POSITION);
     }
 
