@@ -9,28 +9,6 @@ function Car(position, direction) {
 
   this.midLap = false;
 
-  this.addBackWheel = function(x, y, z, mesh) {
-    var geometry = new THREE.TorusGeometry( 1.25, 0.75, 6, 15);
-    //var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: false } );
-    var wheelmesh = new THREE.Mesh( geometry, black_phong );
-    wheelmesh.rotateY(Math.PI/2);
-    wheelmesh.position.set(x, y, z);
-    mesh.add(wheelmesh);
-
-    return wheelmesh;
-  }
-
-  this.addFrontWheel = function(x, y, z, mesh) {
-    var geometry = new THREE.TorusGeometry( 0.5, 0.5, 6, 15);
-    //var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: false } );
-    var wheelmesh = new THREE.Mesh( geometry, black_phong );
-    wheelmesh.rotateY(Math.PI/2);
-    wheelmesh.position.set(x, y, z);
-    mesh.add(wheelmesh);
-
-    return wheelmesh;
-  }
-
   var mesh = new THREE.Object3D();
 
   var phong = new THREE.MeshPhongMaterial({color: 0x796b26, emissive: 0x0, specular: 0xd5e3af, shininess: 5});
@@ -64,7 +42,6 @@ function Car(position, direction) {
 
   MovableObject.call(this, position, mesh, material, lambert, phong);
   SolidObject.call(this, position, mesh, new SphereBox(6), material, lambert, phong);
-  this.baseAcceleration = 100;
   this.direction = direction;
   this.potAngularSpd = 0;
 
@@ -79,13 +56,14 @@ function Car(position, direction) {
 
   // Movement
   this.keypress = function(key) {
+    //console.log("keypress: "+ key);
     switch (key.key) {
       case "ArrowUp":
-        self.acceleration = self.baseAcceleration;
+        self.speed = 30;
         break;
 
       case "ArrowDown":
-        self.acceleration = - self.baseAcceleration;
+        self.speed = - 30;
         break;
 
       case "ArrowLeft":
@@ -101,10 +79,11 @@ function Car(position, direction) {
   }
 
   this.keyup = function(key) {
+    //console.log("keyup: "+ key);
     switch(key.key) {
       case "ArrowUp":
       case "ArrowDown":
-        self.acceleration = 0;
+        self.speed = 0;
         break;
 
       case "ArrowLeft":
@@ -163,17 +142,14 @@ function Car(position, direction) {
 
     this.light1.target.position.copy(this.mesh.position).add(this.direction.clone().multiplyScalar(100));
 
-    if (this.mesh.position.distanceTo(new THREE.Vector3(-60, 0, 0)) < 40) {
-      this.midLap = true;
-      console.log('half-lap');
-    }
-
-    if (this.mesh.position.distanceTo(new THREE.Vector3(60, 0, 0)) < 40 && this.midLap) {
+    if (this.mesh.position.y>70) {
       SCORE++;
       SCORE_TXT.updateScore(SCORE);
-      console.log('lap!');
+      console.log('Win!');
       this.midLap = false;
       PARTICLE_SYSTEM.reset();
+      this.speed = 0;
+      this.mesh.position.copy(INITIAL_POSITION);
     }
   };
 
