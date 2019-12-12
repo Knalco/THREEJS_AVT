@@ -11,7 +11,7 @@ function Wood(position){
   SolidObject.call(this, position, mesh, new SphereBox(2), wood_material, wood_lambert, wood_phong);
 
   this.speed = 5;
-  this.direction = new THREE.Vector3(1,0,0);
+  this.direction = new THREE.Vector3(-1,0,0);
 
   this.collide = function(other) {
     if (other instanceof Orange) return; // Disable collision with oranges for performance.
@@ -29,8 +29,7 @@ function Wood(position){
 
   this.update = function(delta) {
     if (this.isOutside()) {
-      this.speed = 120;
-      this.direction = new THREE.Vector3(0,0,-1);
+      this.mesh.position.x=100;
     }
 
     if (this.mesh.position.z < -50) {
