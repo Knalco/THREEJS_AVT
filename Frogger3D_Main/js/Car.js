@@ -143,8 +143,10 @@ function Car(position, direction) {
 
     this.light1.target.position.copy(this.mesh.position).add(this.direction.clone().multiplyScalar(100));
 
+
+
     if (this.mesh.position.y>70) {
-      
+
       SCORE++;
       SCORE_TXT.updateScore(SCORE);
       console.log('Win!');
@@ -154,9 +156,16 @@ function Car(position, direction) {
       this.currentTarget=0;
       this.mesh.position.copy(INITIAL_POSITION);
     }
+
+
   };
 
+
+
+
   this.collide = function(other) {
+
+
     if (other instanceof Orange) {
       console.log("Sploosh!");
       LIVES--;
@@ -193,16 +202,28 @@ function Car(position, direction) {
       this.mesh.position.copy(INITIAL_POSITION);
     }
 
-    if (other instanceof Butter) {
-      var disp = this.direction.clone().multiplyScalar(Math.sign(this.speed));
-      disp.divideScalar(20);
-      this.speed = -Math.sign(this.speed) * 0.001;
-       if (disp.x == 0 && disp.y == 0) disp = new THREE.Vector3(0.001,0,0);
-      while (this.hasCollision(other)) {
-        this.mesh.position.sub(disp);
-        //console.log("Butter");
+    if (other instanceof Wood || other instanceof Turtle) {
+        this.mesh.position.x+=other.mesh.position.x-this.mesh.position.x;
+      //console.log("Butter");
       }
-    }
+
+    /*if (other instanceof River){
+        console.log("Sploosh!");
+        LIVES--;
+        L_DSP.updateLives(LIVES);
+        this.midLap = false;
+
+        if (LIVES <= 0) {
+          PAUSED = true;
+          GAME_OVER = true;
+          GO_TXT.mesh.visible = true;
+        }
+
+
+        this.speed = 0;
+        this.currentTarget=0;
+        this.mesh.position.copy(INITIAL_POSITION);
+      }*/
   };
 
   this.switchMat2 = function(key) {

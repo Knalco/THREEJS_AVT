@@ -14,15 +14,15 @@ function Wood(position){
   this.direction = new THREE.Vector3(-1,0,0);
 
   this.collide = function(other) {
-    if (other instanceof Orange) return; // Disable collision with oranges for performance.
+    if (other instanceof Orange) return;
+    if (other instanceof Car) return; // Disable collision with oranges for performance.
     var disp = other.mesh.position.clone().sub(this.mesh.position).normalize().divideScalar(40);
     disp.z = 0;
     if (disp.x == 0 && disp.y == 0) disp = new THREE.Vector3(1,0,0);
     while (this.hasCollision(other)) {
       this.mesh.position.sub(disp);
     }
-    if (!other instanceof Cheerio) this.direction = disp.normalize().negate();
-    if (other instanceof Car || other instanceof Orange) this.direction = other.direction.clone().multiplyScalar(Math.sign(other.speed));
+
     if (other instanceof Butter) this.speed = 0;
     else this.speed = Math.max(this.speed / 2, Math.abs(other.speed / 2));
   };

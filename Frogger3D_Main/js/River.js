@@ -18,6 +18,7 @@ function River(){
   var lambert = new THREE.MeshLambertMaterial({map: this.texture, emissive: 0x0 });
   var mesh = new THREE.Mesh( geometry, material );
 
+  //SolidObject.call(this, position, mesh, new AxisAlignedBox(new THREE.Vector3(-200,-22.5,0),new THREE.Vector3(200,22.5,2)), material, lambert, phong);
   GameObject.call(this, position, mesh, material, lambert, phong);
   mesh.receiveReflections = true;
   mesh.receiveShadows = false;
