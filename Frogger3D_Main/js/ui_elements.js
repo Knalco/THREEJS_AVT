@@ -29,13 +29,13 @@ function GameOverTxt() {
 
 function HitPoints() {
     var self = this;
-    var carMesh = CAR.mesh.clone();
+    var frogMesh = FROG.mesh.clone();
     this.models = [
-        carMesh.clone(),
-        carMesh.clone(),
-        carMesh.clone(),
-        carMesh.clone(),
-        carMesh.clone()
+        frogMesh.clone(),
+        frogMesh.clone(),
+        frogMesh.clone(),
+        frogMesh.clone(),
+        frogMesh.clone()
     ];
 
     this.meshes = new THREE.Object3D();

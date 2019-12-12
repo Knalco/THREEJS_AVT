@@ -30,7 +30,7 @@ function ParticleSystem() {
 
     for (var i = 0; i < 100; i++) {
         // Create Particles
-        this.createParticle(new THREE.Vector3(60, 0, 10),
+        this.createParticle(new THREE.Vector3(0, 75, 10),
             1.0,
             new THREE.Vector3(10, 0, 10).applyAxisAngle(zz, Math.random() * Math.PI * 2),
             new THREE.Vector3(0, 0, -20),
@@ -59,5 +59,5 @@ function ParticleSystem() {
             particle.alpha = particle.initialAlpha;
         })
     }
-    
+
 }

@@ -21,7 +21,7 @@ function Turtle(position){
 
   this.collide = function(other) {
     if (other instanceof Orange) return;
-    if (other instanceof Car) return; // Disable collision with oranges for performance.
+    if (other instanceof Frog) return; // Disable collision with oranges for performance.
     var disp = other.mesh.position.clone().sub(this.mesh.position).normalize().divideScalar(40);
     disp.z = 0;
     if (disp.x == 0 && disp.y == 0) disp = new THREE.Vector3(1,0,0);

@@ -11,7 +11,7 @@ var HEAD_HEIGHT = 0;
 var STEREO_ON = false;
 
 var RENDERER;
-var CAR; // Needed to make camera follow car.
+var FROG; // Needed to make camera follow car.
 var INITIAL_POSITION = new THREE.Vector3(0,-80,0);
 var SUN;
 var GRASS;
@@ -45,9 +45,37 @@ function initScene(){
 
   SCENE = new THREE.Scene();
 
+  /*var uniforms_vertex = {
+    ModelMatrix
+    ViewMatrix
+    ModelViewMatrix
+    pvmMatrix
+  }
+
+  var uniforms_frag = {
+    cubeMap
+    colorMap
+  }
+
+  var skyBoxMaterial = new THREE.ShaderMaterial({
+    vertexShader: getElementById('vertexShader').texContent,
+    fragmentShader: getElementById('fragmentShader').texContent
+  });*/
+
   fogColor = new THREE.Color(0xaaaaaa);
-  SCENE.background = fogColor;
+  SCENE.background = new THREE.CubeTextureLoader()
+	.setPath( 'tex/SkyBox/' )
+	.load( [
+    'ashcanyon_lf.jpg',
+		'ashcanyon_rt.jpg',
+    'ashcanyon_up.jpg',
+    'ashcanyon_dn.jpg',
+		'ashcanyon_ft.jpg',
+		'ashcanyon_bk.jpg'
+	] );
+
   SCENE.fog = new THREE.FogExp2(fogColor,0.005);
+
 
 
 
@@ -204,8 +232,8 @@ function gameStart() {
   RIVER = new River();
   GRASS = new Grass();
   createTrack();
-  CAR = new Car(INITIAL_POSITION, new THREE.Vector3(0,1,0));
-  UPDATE.push(CAR);
+  FROG = new Frog(INITIAL_POSITION, new THREE.Vector3(0,1,0));
+  UPDATE.push(FROG);
 
   SUN = new THREE.DirectionalLight(0xf7e7c0, 1.2);
   SUN.position.set(200, 200, 10);
@@ -234,8 +262,8 @@ function gameStart() {
 function updateFollowCamera(delta) {
   updateMovieCamera(delta);
   if (CAMERA != CAMERA3 && !STEREO_ON) return;
-  var pos = new THREE.Vector3(CAR.mesh.position.x, CAR.mesh.position.y, CAR.mesh.position.z);
-  var dir = CAR.direction.clone();
+  var pos = new THREE.Vector3(FROG.mesh.position.x, FROG.mesh.position.y, FROG.mesh.position.z);
+  var dir = FROG.direction.clone();
   dir.applyAxisAngle(new THREE.Vector3(0,0,1), HEAD_ANGLE);
   dir.multiplyScalar(80);
   var pos2 = pos.clone();

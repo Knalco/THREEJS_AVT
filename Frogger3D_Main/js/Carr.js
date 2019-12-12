@@ -33,7 +33,7 @@ function Carr(position){
   if (this.mesh.position.y==-40) {
     this.direction = new THREE.Vector3(-1,0,0);
   }
-  
+
 
   this.collide = function(other) {
     if (other instanceof Orange) return; // Disable collision with oranges for performance.
@@ -44,7 +44,7 @@ function Carr(position){
       this.mesh.position.sub(disp);
     }
     if (!other instanceof Cheerio) return;
-    if (other instanceof Car) return;
+    if (other instanceof Frog) return;
     if (other instanceof Butter) this.speed = 0;
     else this.speed = Math.max(this.speed / 2, Math.abs(other.speed / 2));
   };
@@ -56,7 +56,7 @@ function Carr(position){
       }else{
         this.mesh.position.x=-100;
       }
-      
+
     }
 
     if (this.mesh.position.z < -50) {
